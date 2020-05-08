@@ -12,6 +12,7 @@ void init_scene(Scene* scene)
 {
     load_model(&(scene->cube), "models/mars.obj");
     scene->texture_id = load_texture("textures/mars.jpg"); 
+	scene->help_id = load_texture("ujhelp.png");
 
 	SkyTexture=load_texture("textures/skybox.png");	
 

@@ -136,6 +136,15 @@ void keyboard(unsigned char key, int x, int y)
         glLightfv( GL_LIGHT0, GL_SPECULAR, current_specular );
       }	
 	  break;
+	  
+	 case 'h' :
+        if (is_preview_visible) {
+            is_preview_visible = FALSE;
+        }
+        else {
+            is_preview_visible = TRUE;
+        }
+        break;
     }
 
     glutPostRedisplay();
@@ -203,7 +212,7 @@ void keyboard_up(unsigned char key, int x, int y)
 			fog();
 		}
 		break;
-
+	
     }
 	
 
