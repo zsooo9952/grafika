@@ -64,7 +64,7 @@ void motion(int x, int y)
     glutPostRedisplay();
 }
 
-void keyboard(unsigned char key, int x, int y)
+void keyboard(unsigned char key, int x, int y, int z)
 {
     switch (key) {
     case 'w':
@@ -84,14 +84,6 @@ void keyboard(unsigned char key, int x, int y)
         break;
     case 'e':
         set_camera_lift_speed(&camera, -1);
-        break;
-    case 't':
-        if (is_preview_visible) {
-            is_preview_visible = FALSE;
-        }
-        else {
-            is_preview_visible = TRUE;
-        }
         break;
 		 case '+':
       ;
@@ -136,7 +128,6 @@ void keyboard(unsigned char key, int x, int y)
         glLightfv( GL_LIGHT0, GL_SPECULAR, current_specular );
       }	
 	  break;
-	  
 	 case 'h' :
         if (is_preview_visible) {
             is_preview_visible = FALSE;
@@ -145,6 +136,7 @@ void keyboard(unsigned char key, int x, int y)
             is_preview_visible = TRUE;
         }
         break;
+	
     }
 
     glutPostRedisplay();
@@ -180,7 +172,7 @@ void fog()
 	}
 }
 
-void keyboard_up(unsigned char key, int x, int y)
+void keyboard_up(unsigned char key, int x, int y, int z)
 {
     switch (key) {
     case 'w':
@@ -195,10 +187,6 @@ void keyboard_up(unsigned char key, int x, int y)
     case 'e':
         set_camera_lift_speed(&camera, 0.0);
         break;
-	case 'h' :
-		MessageBox(0, "Mozgas: WASD\n Mozgas fel/le :Q/E\n Kod : F" , "Help" , MB_OK);
-	default:
-		break;
 	case 'f':
 	case 'F':
 		if (2 == fogsets)
@@ -212,7 +200,7 @@ void keyboard_up(unsigned char key, int x, int y)
 			fog();
 		}
 		break;
-	
+
     }
 	
 
@@ -231,6 +219,7 @@ void idle()
 
     update_camera(&camera, elapsed_time);
 	marsrotate(elapsed_time);
+	
 
     glutPostRedisplay();
 }

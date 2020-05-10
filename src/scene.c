@@ -7,6 +7,7 @@
 
 double marsmove;
 
+
 unsigned int SkyTexture;
 void init_scene(Scene* scene)
 {
@@ -94,15 +95,19 @@ void draw_scene(const Scene* scene)
 	glBindTexture( GL_TEXTURE_2D,scene->texture_id );
     draw_model(&(scene->cube));
 	
+	
 	glBindTexture( GL_TEXTURE_2D, SkyTexture);
 	DrawSky();
 	
 	glPushMatrix();
 	glTranslatef(3, -7.3, 34.65);
-	glRotatef(0+marsmove, 1.0f, 1.0f, 1.0f);
+	glRotatef(0+marsmove, 100.0f, 100.0f, 100.0f);
 	glBindTexture(GL_TEXTURE_2D,scene->texture_id);
 	draw_model(&(scene->cube));
 	glPopMatrix();
+	
+	//help menü
+	glBindTexture(GL_TEXTURE_2D,scene->help_id);
 }
 
 void draw_origin()
@@ -123,6 +128,7 @@ void draw_origin()
 
     glEnd();
 }
+
 void marsrotate(double time) {
 	marsmove+=time*5;
 }

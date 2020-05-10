@@ -39,12 +39,12 @@ void motion(int x, int y);
 /**
  * Call after keyboard event.
  */
-void keyboard(unsigned char key, int x, int y);
+void keyboard(unsigned char key, int x, int y, int z);
 
 /**
  * Call after keyboard release event.
  */
-void keyboard_up(unsigned char key, int x, int y);
+void keyboard_up(unsigned char key, int x, int y, int z);
 
 /**
  * Call when there is no other event.

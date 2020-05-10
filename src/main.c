@@ -34,7 +34,7 @@ int main(int argc, char* argv[])
     glutInitWindowSize(640, 480);     
     glutInitDisplayMode(GLUT_RGBA | GLUT_DOUBLE | GLUT_DEPTH);
 
-    window = glutCreateWindow("Scene with a camera");
+    window = glutCreateWindow("Sztollar Zsofia beadandoja - PRESS 'h' FOR HELP");
     glutSetWindow(window);
 	SkyTexture=load_texture("skybox.png");
 
