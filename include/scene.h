@@ -12,6 +12,8 @@ typedef struct Scene
     Material material;
     GLuint texture_id;
 	GLuint help_id;
+	Model sun;
+	GLuint suntex;
 } Scene;
 
 /**

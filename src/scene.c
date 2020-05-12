@@ -6,6 +6,8 @@
 #include <obj/draw.h>
 
 double marsmove;
+double marsx;
+double marsy;
 
 
 unsigned int SkyTexture;
@@ -14,31 +16,35 @@ void init_scene(Scene* scene)
     load_model(&(scene->cube), "models/mars.obj");
     scene->texture_id = load_texture("textures/mars.jpg"); 
 	scene->help_id = load_texture("ujhelp.png");
-
-	SkyTexture=load_texture("textures/skybox.png");	
-
-    scene->material.ambient.red = 0.0;
-    scene->material.ambient.green = 0.0;
-    scene->material.ambient.blue = 0.0;
-
-    scene->material.diffuse.red = 1.0;
-    scene->material.diffuse.green = 1.0;
-    scene->material.diffuse.blue = 1.0;
-
-    scene->material.specular.red = 1.0;
-    scene->material.specular.green = 1.0;
-    scene->material.specular.blue = 1.0;
-
-    scene->material.shininess = 10.0;
+	load_model(&(scene->sun), "models/sun2.obj");
+    scene->suntex = load_texture("textures/suntexture.jpg");
+	
+	SkyTexture=load_texture("textures/skybox.png");
+	
 	set_lighting(scene);
-}
+		
+  scene->material.ambient.red = 0.2;
+  scene->material.ambient.green = 0.2;
+  scene->material.ambient.blue = 0.2;
+
+  scene->material.diffuse.red = 1;
+  scene->material.diffuse.green = 1;
+  scene->material.diffuse.blue = 1;
+
+  scene->material.specular.red = 0.3;
+  scene->material.specular.green = 0.3;
+  scene->material.specular.blue = 0.3;
+
+  scene->material.shininess = 10.0;
+	
+	}
 
 void set_lighting()
 {
   float ambient_light[] = { 0.8f, 0.8f, 0.8f, 0.8f };
   float diffuse_light[] = { 0.9f, 0.9f, 0.9f, 0.9f };
   float specular_light[] = { 1.0f, 1.0f, 1.0f, 1.0f };
-  float position[] = { 0.0f, 0.0f, 10.0f, 1.0f };
+  float position[] = { 1.0f, 1.0f, 1.0f, 0.0f };
 
     glLightfv(GL_LIGHT0, GL_AMBIENT, ambient_light);
     glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse_light);
@@ -84,51 +90,36 @@ void DrawSky()
 	gluQuadricTexture( pSphereQuadric, GL_TRUE );
 	gluQuadricNormals( pSphereQuadric, GLU_SMOOTH );
 	gluSphere( pSphereQuadric, 100.0, 360, 180 );
-	gluDeleteQuadric( pSphereQuadric );	
+	gluDeleteQuadric( pSphereQuadric );
 }
 
 void draw_scene(const Scene* scene)
 {
     set_material(&(scene->material));
     
-    draw_origin();
-	glBindTexture( GL_TEXTURE_2D,scene->texture_id );
-    draw_model(&(scene->cube));
-	
-	
+   
 	glBindTexture( GL_TEXTURE_2D, SkyTexture);
 	DrawSky();
 	
 	glPushMatrix();
-	glTranslatef(3, -7.3, 34.65);
-	glRotatef(0+marsmove, 100.0f, 100.0f, 100.0f);
+	glTranslatef(20+marsx, -10+marsy, 0.42);
+	glRotatef(0+marsmove, 0.0f, 0.0f, 1.0f);
 	glBindTexture(GL_TEXTURE_2D,scene->texture_id);
 	draw_model(&(scene->cube));
 	glPopMatrix();
 	
+	glPushMatrix();
+	glTranslatef(20, 10, 0.42);
+		glBindTexture(GL_TEXTURE_2D,scene->suntex);
+		draw_model(&(scene->sun));
+	glPopMatrix();
+	
+	
 	//help menü
 	glBindTexture(GL_TEXTURE_2D,scene->help_id);
 }
-
-void draw_origin()
-{
-    glBegin(GL_LINES);
-
-    glColor3f(1, 0, 0);
-    glVertex3f(0, 0, 0);
-    glVertex3f(1, 0, 0);
-
-    glColor3f(0, 1, 0);
-    glVertex3f(0, 0, 0);
-    glVertex3f(0, 1, 0);
-
-    glColor3f(0, 0, 1);
-    glVertex3f(0, 0, 0);
-    glVertex3f(0, 0, 1);
-
-    glEnd();
-}
-
-void marsrotate(double time) {
+void marsmoves(double time) {
+	marsx-=time/10;
+	marsy+=time/10;
 	marsmove+=time*5;
 }
