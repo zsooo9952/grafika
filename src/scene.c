@@ -1,5 +1,4 @@
 #include "scene.h"
-
 #include <GL/glut.h>
 
 #include <obj/load.h>
@@ -8,9 +7,23 @@
 double marsmove;
 double marsx;
 double marsy;
-
+double fgd;
 
 unsigned int SkyTexture;
+
+void init_fog()
+{
+  glEnable(GL_FOG);
+  GLfloat fogDensity = fgd;
+  GLfloat fogColor[4] = { 0.0f, 1.0f, 1.0f, 1 };
+  glFogi( GL_FOG_MODE, GL_EXP2 );
+  glFogfv( GL_FOG_COLOR, fogColor );
+  glFogf( GL_FOG_DENSITY, fogDensity );
+  glHint( GL_FOG_HINT, GL_NICEST );
+  glFogf( GL_FOG_START, 1.0f );
+  glFogf( GL_FOG_END, 40.0f );
+}
+
 void init_scene(Scene* scene)
 {
     load_model(&(scene->cube), "models/mars.obj");
@@ -22,7 +35,8 @@ void init_scene(Scene* scene)
 	SkyTexture=load_texture("textures/skybox.png");
 	
 	set_lighting(scene);
-		
+	init_fog();
+	
   scene->material.ambient.red = 0.2;
   scene->material.ambient.green = 0.2;
   scene->material.ambient.blue = 0.2;
@@ -35,8 +49,8 @@ void init_scene(Scene* scene)
   scene->material.specular.green = 0.3;
   scene->material.specular.blue = 0.3;
 
-  scene->material.shininess = 10.0;
-	
+  scene->material.shininess = 50.0;
+
 	}
 
 void set_lighting()
@@ -51,6 +65,7 @@ void set_lighting()
     glLightfv(GL_LIGHT0, GL_SPECULAR, specular_light);
     glLightfv(GL_LIGHT0, GL_POSITION, position);
 }
+
 
 void set_material(const Material* material)
 {
@@ -97,9 +112,10 @@ void draw_scene(const Scene* scene)
 {
     set_material(&(scene->material));
     
-   
+    
 	glBindTexture( GL_TEXTURE_2D, SkyTexture);
 	DrawSky();
+	init_fog();
 	
 	glPushMatrix();
 	glTranslatef(20+marsx, -10+marsy, 0.42);
@@ -118,8 +134,16 @@ void draw_scene(const Scene* scene)
 	//help menü
 	glBindTexture(GL_TEXTURE_2D,scene->help_id);
 }
-void marsmoves(double time) {
+void marsmoves(double time) { 
+    static int last_frame_time = 0;
+    int current_time;
+    double elapsed_time;
+   
+    current_time = glutGet(GLUT_ELAPSED_TIME);
+    elapsed_time = (double)(current_time - last_frame_time) / 1000;
+    last_frame_time = current_time;
 	marsx-=time/10;
 	marsy+=time/10;
 	marsmove+=time*5;
-}
+	fgd=elapsed_time/2;
+	}

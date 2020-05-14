@@ -145,32 +145,6 @@ void keyboard(unsigned char key, int x, int y, int z)
 int visibleCounter = 0;
 int fogsets = 0; 
 
-void fog()
-{
-	float fogColor[] = {5.0, 5.0, 5.0};
-	if (0 < fogsets)
-	{
-		glEnable(GL_FOG);
-
-		glHint(GL_FOG_HINT, GL_NICEST);
-		if (1 == fogsets)
-		{
-			glFogi(GL_FOG_MODE, GL_EXP);
-		}
-		if (2 == fogsets)
-		{
-			glFogi(GL_FOG_MODE, GL_EXP2);
-		}
-		glFogf(GL_FOG_DENSITY, 0.001);
-		glFogf(GL_FOG_START, 1);
-		glFogf(GL_FOG_END, 1000.0);
-		glFogfv(GL_FOG_COLOR, fogColor);
-	}
-	else
-	{
-		glDisable(GL_FOG);
-	}
-}
 
 void keyboard_up(unsigned char key, int x, int y, int z)
 {
@@ -187,20 +161,6 @@ void keyboard_up(unsigned char key, int x, int y, int z)
     case 'e':
         set_camera_lift_speed(&camera, 0.0);
         break;
-	case 'f':
-	case 'F':
-		if (2 == fogsets)
-		{
-			fogsets = 0;
-			fog();
-		}
-		else
-		{
-			fogsets++;
-			fog();
-		}
-		break;
-
     }
 	
 
@@ -216,7 +176,6 @@ void idle()
     current_time = glutGet(GLUT_ELAPSED_TIME);
     elapsed_time = (double)(current_time - last_frame_time) / 1000;
     last_frame_time = current_time;
-
     update_camera(&camera, elapsed_time);
 	marsmoves(elapsed_time);
 	
