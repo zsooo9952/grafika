@@ -1,4 +1,7 @@
 #include "scene.h"
+#include "time.h"
+#include "stdio.h"
+#include "windows.h"
 #include <GL/glut.h>
 
 #include <obj/load.h>
@@ -135,15 +138,15 @@ void draw_scene(const Scene* scene)
 	glBindTexture(GL_TEXTURE_2D,scene->help_id);
 }
 void marsmoves(double time) { 
-    static int last_frame_time = 0;
+static int last_frame_time = 0;
     int current_time;
     double elapsed_time;
-   
     current_time = glutGet(GLUT_ELAPSED_TIME);
     elapsed_time = (double)(current_time - last_frame_time) / 1000;
     last_frame_time = current_time;
+    double t = (double)current_time / 1000;
+    fgd=0.028*sin(t)+0.03;
 	marsx-=time/10;
 	marsy+=time/10;
 	marsmove+=time*5;
-	fgd=elapsed_time/2;
 	}

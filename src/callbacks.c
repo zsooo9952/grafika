@@ -3,6 +3,8 @@
 #define VIEWPORT_RATIO (4.0 / 3.0)
 #define VIEWPORT_ASPECT 50.0
 
+double fgd;
+
 struct {
     int x;
     int y;
